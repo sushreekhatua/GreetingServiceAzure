@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WXxyvk+Mfd5Wu+tyUCQtSFVKYYZ2Kc//gR13zVplPCGUhwLmky5h3KqDVcg/7ken4BDqXHYENg+JGqLQCfYTdw==",
+  "dgSpecHash": "2wPa0eZeHnEFrITOXXwjwEW/szfsYrBilpTJpe86QMJEsqOGRr8tIlAgIvLfMO/KfeTb/XVzztnk8FNrH2SWTw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\SUKHT\\source\\repos\\GreetingService\\GreetingService\\GreetingService.Core\\GreetingService.Core.csproj",
+  "projectFilePath": "C:\\Github\\GreetingService\\GreetingService\\GreetingService\\GreetingService.Core\\GreetingService.Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

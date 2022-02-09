@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sPqR36xwM7oB6jQ941O9CoJkW58raG2dwE/5q93I9taT0FIuXFJDxBtMmfIXahVlPSF5PDLlrjDbY3gVzQzzFQ==",
+  "dgSpecHash": "H4962t2IjloVLQVlKsBOdqYizjnP1NPSDX9xE0ogQdctIecAFYKHsRZvYiEsG20q4bKTPSSYwDzXX5xkuRSt8w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\SUKHT\\source\\repos\\GreetingService\\GreetingService\\GreetingService.Infrastructure\\GreetingService.Infrastructure.csproj",
+  "projectFilePath": "C:\\Github\\GreetingService\\GreetingService\\GreetingService\\GreetingService.Infrastructure\\GreetingService.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SUKHT\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\SUKHT\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
