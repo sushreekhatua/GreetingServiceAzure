@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationInsightsResourceId>/subscriptions/5bb1b2d9-ed37-4ee3-9053-56954eaa90c7/resourceGroups/Sadhana-rg-dev/providers/microsoft.insights/components/Sadhana-appinsights-dev</ApplicationInsightsResourceId>
+    <UserSecretsId>e1cee72d-3eb1-41a6-8954-acc03243075c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GreetingService.Core\GreetingService.Core.csproj" />
+    <ProjectReference Include="..\GreetingService.Infrastructure\GreetingService.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "restored": true,
+      "restoreTime": "2022-02-03T13:53:54.9409002Z"
+    },
+    "appInsights1": {
+      "restored": true,
+      "restoreTime": "2022-02-03T13:53:56.821304Z"
+    }
+  },
+  "parameters": {
+    "appInsights1.resourceGroupName": {
+      "Name": "appInsights1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "Sadhana-rg-dev"
+    },
+    "appInsights1.subscriptionId": {
+      "Name": "appInsights1.subscriptionId",
+      "Type": "subscription",
+      "Value": "5bb1b2d9-ed37-4ee3-9053-56954eaa90c7"
+    }
+  }
+}

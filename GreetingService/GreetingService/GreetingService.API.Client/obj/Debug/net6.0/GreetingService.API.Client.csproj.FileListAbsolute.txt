@@ -1,0 +1,15 @@
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\bin\Debug\net6.0\GreetingService.API.Client.exe
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\bin\Debug\net6.0\GreetingService.API.Client.deps.json
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\bin\Debug\net6.0\GreetingService.API.Client.runtimeconfig.json
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\bin\Debug\net6.0\GreetingService.API.Client.dll
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\bin\Debug\net6.0\ref\GreetingService.API.Client.dll
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\bin\Debug\net6.0\GreetingService.API.Client.pdb
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\obj\Debug\net6.0\GreetingService.API.Client.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\obj\Debug\net6.0\GreetingService.API.Client.AssemblyInfoInputs.cache
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\obj\Debug\net6.0\GreetingService.API.Client.AssemblyInfo.cs
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\obj\Debug\net6.0\GreetingService.API.Client.csproj.CoreCompileInputs.cache
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\obj\Debug\net6.0\GreetingService.API.Client.dll
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\obj\Debug\net6.0\ref\GreetingService.API.Client.dll
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\obj\Debug\net6.0\GreetingService.API.Client.pdb
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\obj\Debug\net6.0\GreetingService.API.Client.genruntimeconfig.cache
+C:\Users\SUKHT\source\repos\GreetingService\GreetingService\GreetingService.API.Client\obj\Debug\net6.0\GreetingService.API.Client.csproj.AssemblyReference.cache
