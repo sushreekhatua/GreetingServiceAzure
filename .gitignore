@@ -20,3 +20,6 @@
 profile.arm.json
 greetings.json
 local.settings.json
+
+.fake
+.ionide

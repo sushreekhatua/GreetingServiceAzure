@@ -6,6 +6,7 @@ var storageAccountName = '${substring(appName,0,10)}${uniqueString(resourceGroup
 var hostingPlanName = '${appName}${uniqueString(resourceGroup().id)}'
 var appInsightsName = '${appName}${uniqueString(resourceGroup().id)}'
 var functionAppName = '${appName}'
+var loggingStorageAccountName = '${substring(appName,0,7)}log${uniqueString(resourceGroup().id)}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   name: storageAccountName
@@ -13,9 +14,18 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   kind: 'StorageV2'
   sku: {
     name: 'Standard_LRS'
-    tier: 'Standard'
   }
 }
+
+resource loggingStorageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
+  name: loggingStorageAccountName
+  location: location
+  kind: 'StorageV2'
+  sku: {
+    name: 'Standard_LRS'
+  }
+}
+
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
   name: appInsightsName
@@ -48,20 +58,28 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
   properties: {
     httpsOnly: true
     serverFarmId: hostingPlan.id
-    clientAffinityEnabled: true
     siteConfig: {
       appSettings: [
         {
+
           'name': 'APPINSIGHTS_INSTRUMENTATIONKEY'
           'value': appInsights.properties.InstrumentationKey
+        }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+           value: '1' 
         }
         {
           name: 'AzureWebJobsStorage'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
         }
         {
+          name: 'LoggingStorageAccount'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${loggingStorageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(loggingStorageAccount.id, loggingStorageAccount.apiVersion).keys[0].value}'
+        }
+        {
           'name': 'FUNCTIONS_EXTENSION_VERSION'
-          'value': '~3'
+          'value': '~4'
         }
         {
           'name': 'FUNCTIONS_WORKER_RUNTIME'
@@ -76,10 +94,5 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
       ]
     }
   }
-
-  dependsOn: [
-    appInsights
-    hostingPlan
-    storageAccount
-  ]
 }
+
