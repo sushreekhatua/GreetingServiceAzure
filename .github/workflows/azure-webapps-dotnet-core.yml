@@ -74,7 +74,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: .net-app
-          
+      # Extra  steps added 
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
