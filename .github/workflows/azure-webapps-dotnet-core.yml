@@ -20,7 +20,7 @@
 name: Build and deploy ASP.Net Core app to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: sadhanafunctio1app    # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: sadhanafunction3app    # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'                 # set this to the .NET Core version to use
 
@@ -62,14 +62,6 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: deploy_bicep
-    environment:
-      name: 'Development'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-
   deploy_bicep:
     runs-on: ubuntu-latest
     needs: build
@@ -91,8 +83,14 @@ jobs:
           azcliversion: 2.30.0
           inlineScript: |
             az group create -l northeurope -n Sadhana-rg3-dev
-            az deployment group create --resource-group Sadhana-rg3-dev --template-file ./azure_resources.bicep --parameters appName=sadhanafunction1app
+            az deployment group create --resource-group Sadhana-rg3-dev --template-file ./azure_resources.bicep --parameters appName= ${{ env.AZURE_WEBAPP_NAME }}
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Development'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - name: Download artifact from build job
