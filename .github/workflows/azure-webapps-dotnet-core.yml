@@ -75,6 +75,7 @@ jobs:
         with:
           name: .net-app
       # Extra  steps added 
+      # Trying again
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
