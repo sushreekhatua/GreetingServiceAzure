@@ -84,7 +84,7 @@ jobs:
           azcliversion: 2.30.0
           inlineScript: |
             az group create -l northeurope -n Sadhana-rg3-dev
-            az deployment group create --resource-group Sadhana-rg3-dev --template-file ./azure_resources.bicep --parameters appName= ${{ env.AZURE_WEBAPP_NAME }}
+            az deployment group create --resource-group Sadhana-rg3-dev --template-file ./azure_resources.bicep --parameters appName=${{ env.AZURE_WEBAPP_NAME }}
 
   deploy:
     runs-on: ubuntu-latest
