@@ -42,12 +42,12 @@ namespace GreetingService.API.Function
                 c.AddSerilog(logger, true);
             });
 
-            builder.Services.AddScoped<IGreetingRepository, FileGreetingRepository>(c =>
-            {
-                var config = c.GetService<IConfiguration>();
-                return new FileGreetingRepository(config["FileRepositoryFilePath"]);
-            });
-            //builder.Services.AddSingleton<IGreetingRepository, MemoryGreetingRepository>();
+            //builder.Services.AddScoped<IGreetingRepository, FileGreetingRepository>(c =>
+            //{
+            //    var config = c.GetService<IConfiguration>();
+            //    return new FileGreetingRepository(config["FileRepositoryFilePath"]);
+            //});
+            builder.Services.AddSingleton<IGreetingRepository, MemoryGreetingRepository>();
 
             builder.Services.AddScoped<IUserService, AppSettingsUserService>();
             builder.Services.AddScoped<IAuthHandler, BasicAuthHandler>();
