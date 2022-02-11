@@ -63,5 +63,55 @@ namespace GreetingService.Infrastructure.Test
             Assert.True(checkfiles1.Count()>1);
             Assert.Equal(newgreetinglists.Count(), checkfiles1.ToList().Count());
         }
+
+        [Fact]
+        public void get_should_return_correct_greeting()
+        {
+            var expectedGreeting1 = newgreetinglists[0];
+            var actualGreeting1 = filegreetingrepo_.Get(expectedGreeting1.Id);
+            Assert.NotNull(actualGreeting1);
+            Assert.Equal(expectedGreeting1.Id, actualGreeting1.Id);
+
+            var expectedGreeting2 = newgreetinglists[1];
+            var actualGreeting2 = filegreetingrepo_.Get(expectedGreeting2.Id);
+            Assert.NotNull(actualGreeting2);
+            Assert.Equal(expectedGreeting2.Id, actualGreeting2.Id);
+        }
+
+        [Fact]
+        public void post_should_persist_to_file()
+        {
+            var greetingsBeforeCreate = filegreetingrepo_.Create();
+
+            var newGreeting = new Greeting
+            {
+                From = "post_test",
+                To = "post_test",
+                Message = "post_test",
+            };
+
+            filegreetingrepo_.Create(newGreeting);
+
+            var greetingsAfterCreate = filegreetingrepo_.Create();
+
+            Assert.Equal(greetingsBeforeCreate.Count() + 1, greetingsAfterCreate.Count());
+        }
+
+        [Fact]
+        public void update_should_persist_to_file()
+        {
+            var greetings = filegreetingrepo_.Create();
+
+            var firstGreeting = greetings.First();
+            var firstGreetingMessage = firstGreeting.Message;
+
+            var testMessage = "new updated message";
+            firstGreeting.Message = testMessage;
+
+            filegreetingrepo_.Update(firstGreeting);
+
+            var firstGreetingAfterUpdate = filegreetingrepo_.Get(firstGreeting.Id);
+            Assert.Equal(testMessage, firstGreetingAfterUpdate.Message);
+        }
     }
 }
