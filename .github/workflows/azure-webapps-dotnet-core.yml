@@ -85,6 +85,10 @@ jobs:
             az group create -l northeurope -n Sadhana-rg3-dev
             az deployment group create --resource-group Sadhana-rg3-dev --template-file ./azure_resources.bicep --parameters appName=${{ env.AZURE_WEBAPP_NAME }}
 
+      - name: Sleep for 30 seconds
+        run: sleep 30s
+        shell: bash
+
   deploy:
     runs-on: ubuntu-latest
     needs: deploy_bicep
