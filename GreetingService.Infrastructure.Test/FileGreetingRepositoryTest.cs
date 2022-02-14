@@ -58,7 +58,7 @@ namespace GreetingService.Infrastructure.Test
         [Fact]
         public void test_for_all_truegreeting_files()
         {
-            var checkfiles1=filegreetingrepo_.Create();
+            #var checkfiles1=filegreetingrepo_.Create();
             Assert.NotNull(checkfiles1);
             Assert.True(checkfiles1.Count()>1);
             Assert.Equal(newgreetinglists.Count(), checkfiles1.ToList().Count());
