@@ -13,7 +13,7 @@ namespace GreetingService.Infrastructure
 {
     public class BlobGreetingRepository : IGreetingRepository
     {
-        private const string blobname="Greetingblob.json";
+        //private const string blobname="Greetingblob.json";
         private const string _blobContainerName = "Greetingblob";
         private readonly BlobContainerClient _blobContainerClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
