@@ -33,7 +33,7 @@ namespace GreetingService.API.Function
 
                 var logName = $"{Assembly.GetCallingAssembly().GetName().Name}.log";
                 var logger = new LoggerConfiguration()
-                                    .WriteTo.AzureBlobStorage(connectionString,storageContainerName:"Serilogs",
+                                    .WriteTo.AzureBlobStorage(connectionString,
                                                               restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
                                                               storageFileName: "{yyyy}/{MM}/{dd}/" + logName,
                                                               outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] [{SourceContext}] {Message}{NewLine}{Exception}")
@@ -48,6 +48,7 @@ namespace GreetingService.API.Function
             //    return new FileGreetingRepository(config["FileRepositoryFilePath"]);
             //});
             builder.Services.AddSingleton<IGreetingRepository, MemoryGreetingRepository>();
+            //builder.Services.AddSingleton<IGreetingRepository, BlobGreetingRepository>();
 
             builder.Services.AddScoped<IUserService, AppSettingsUserService>();
             builder.Services.AddScoped<IAuthHandler, BasicAuthHandler>();

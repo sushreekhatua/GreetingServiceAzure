@@ -59,7 +59,7 @@ namespace GreetingService.API.Function
             try
             {
                 Guid.TryParse(id, out new_id);
-                var greeting = _greetingRepository.Get(new_id);
+                var greeting = await _greetingRepository.GetAsync(new_id);
                 return new OkObjectResult(greeting);
             }
             catch

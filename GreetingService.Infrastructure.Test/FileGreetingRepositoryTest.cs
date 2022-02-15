@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
 
@@ -56,32 +57,32 @@ namespace GreetingService.Infrastructure.Test
 
 
         [Fact]
-        public void test_for_all_truegreeting_files()
+        public async Task test_for_all_truegreeting_files()
         {
-            var checkfiles1=filegreetingrepo_.Create();
+            var checkfiles1=await filegreetingrepo_.CreateAsync();
             Assert.NotNull(checkfiles1);
             Assert.True(checkfiles1.Count()>1);
             Assert.Equal(newgreetinglists.Count(), checkfiles1.ToList().Count());
         }
 
         [Fact]
-        public void get_should_return_correct_greeting()
+        public async Task get_should_return_correct_greeting()
         {
             var expectedGreeting1 = newgreetinglists[0];
-            var actualGreeting1 = filegreetingrepo_.Get(expectedGreeting1.Id);
+            var actualGreeting1 = await filegreetingrepo_.GetAsync(expectedGreeting1.Id);
             Assert.NotNull(actualGreeting1);
             Assert.Equal(expectedGreeting1.Id, actualGreeting1.Id);
 
             var expectedGreeting2 = newgreetinglists[1];
-            var actualGreeting2 = filegreetingrepo_.Get(expectedGreeting2.Id);
+            var actualGreeting2 = await filegreetingrepo_.GetAsync(expectedGreeting2.Id);
             Assert.NotNull(actualGreeting2);
             Assert.Equal(expectedGreeting2.Id, actualGreeting2.Id);
         }
 
         [Fact]
-        public void post_should_persist_to_file()
+        public async Task post_should_persist_to_file()
         {
-            var greetingsBeforeCreate = filegreetingrepo_.Create();
+            var greetingsBeforeCreate = await filegreetingrepo_.CreateAsync();
 
             var newGreeting = new Greeting
             {
@@ -90,17 +91,17 @@ namespace GreetingService.Infrastructure.Test
                 Message = "post_test",
             };
 
-            filegreetingrepo_.Create(newGreeting);
+            await filegreetingrepo_.CreateAsync(newGreeting);
 
-            var greetingsAfterCreate = filegreetingrepo_.Create();
+            var greetingsAfterCreate = await filegreetingrepo_.CreateAsync();
 
             Assert.Equal(greetingsBeforeCreate.Count() + 1, greetingsAfterCreate.Count());
         }
 
         [Fact]
-        public void update_should_persist_to_file()
+        public async Task update_should_persist_to_file()
         {
-            var greetings = filegreetingrepo_.Create();
+            var greetings = await filegreetingrepo_.CreateAsync();
 
             var firstGreeting = greetings.First();
             var firstGreetingMessage = firstGreeting.Message;
@@ -108,9 +109,9 @@ namespace GreetingService.Infrastructure.Test
             var testMessage = "new updated message";
             firstGreeting.Message = testMessage;
 
-            filegreetingrepo_.Update(firstGreeting);
+            await filegreetingrepo_.UpdateAsync(firstGreeting);
 
-            var firstGreetingAfterUpdate = filegreetingrepo_.Get(firstGreeting.Id);
+            var firstGreetingAfterUpdate = await filegreetingrepo_.GetAsync(firstGreeting.Id);
             Assert.Equal(testMessage, firstGreetingAfterUpdate.Message);
         }
     }

@@ -29,9 +29,9 @@ namespace GreetingService.Infrastructure
 
         }
 
-        public void Create(Greeting greeting)
+        public async Task CreateAsync(Greeting greeting)
         {
-            var content = File.ReadAllText(_filepath);
+            var content =File.ReadAllText(_filepath);
             var greetings = JsonSerializer.Deserialize<IList<Greeting>>(content);
             
             if (greetings.Any(x => x.Id == greeting.Id))
@@ -43,21 +43,22 @@ namespace GreetingService.Infrastructure
             
         }
 
-        public Greeting? Get(Guid id)
+        public async Task<Greeting> GetAsync(Guid id)
         {
             var content = File.ReadAllText(_filepath);
             var greetings = JsonSerializer.Deserialize<IList<Greeting>>(content);
             return greetings?.FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Greeting> Create()
+        //Get all greetings
+        public async Task<IEnumerable<Greeting>> CreateAsync()
         {
             var content = File.ReadAllText(_filepath);
             var greetings = JsonSerializer.Deserialize<IList<Greeting>>(content);
             return greetings;
         }
 
-        public void Update(Greeting greeting)
+        public async  Task UpdateAsync(Greeting greeting)
         {
             var content = File.ReadAllText(_filepath);
             var greetings = JsonSerializer.Deserialize<IList<Greeting>>(content);
@@ -72,7 +73,7 @@ namespace GreetingService.Infrastructure
 
             File.WriteAllText(_filepath, JsonSerializer.Serialize(greetings, _jsonSerializerOptions));
         }
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var content=File.ReadAllText(_filepath);
             var greetings=JsonSerializer.Deserialize<IList<Greeting>>(content);
@@ -87,5 +88,7 @@ namespace GreetingService.Infrastructure
             }
             File.WriteAllText(_filepath, JsonSerializer.Serialize(greetings, _jsonSerializerOptions));
         }
+
+       
     }
 }

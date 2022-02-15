@@ -9,11 +9,11 @@ namespace GreetingService.Core.Interfaces
 {
     public interface IGreetingRepository
     {
-        public Greeting Get(Guid id);
-        public IEnumerable<Greeting> Create();
-        public void Create(Greeting greeting);
-        public void Update(Greeting greeting);
-        public void Delete(Guid id);
+        public Task<Greeting> GetAsync(Guid id);
+        public Task<IEnumerable<Greeting>> CreateAsync();
+        public Task CreateAsync(Greeting greeting);
+        public Task UpdateAsync(Greeting greeting);
+        public Task DeleteAsync(Guid id);
 
 
        

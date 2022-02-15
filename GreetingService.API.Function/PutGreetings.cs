@@ -52,7 +52,7 @@ namespace GreetingService.API.Function
 
             try
             {
-                _greetingRepository.Update(greetings);
+                await _greetingRepository.UpdateAsync(greetings);
             }
             catch
             {

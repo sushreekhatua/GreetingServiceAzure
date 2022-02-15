@@ -51,7 +51,7 @@ namespace GreetingService.API.Function
 
             try
             {
-                var greetings = _greetingRepository.Create();
+                var greetings = _greetingRepository.CreateAsync();
                 return new OkObjectResult(greetings);
             }
             catch
