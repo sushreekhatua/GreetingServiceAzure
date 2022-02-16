@@ -10,7 +10,7 @@ using System.Text.Json;
 using System.Xml.Serialization;
 using GreetingService.Core.Interfaces;
 
-namespace GreetingService.Infrastructure
+namespace GreetingService.Infrastructure.GreetingRepository
 {
     public class FileGreetingRepository : IGreetingRepository
     {

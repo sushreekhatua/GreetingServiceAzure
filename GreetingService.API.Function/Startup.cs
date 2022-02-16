@@ -1,6 +1,8 @@
 ﻿using GreetingService.API.Function.Authentication;
 using GreetingService.Core.Interfaces;
 using GreetingService.Infrastructure;
+using GreetingService.Infrastructure.GreetingRepository;
+using GreetingService.Infrastructure.UserService;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,7 +52,7 @@ namespace GreetingService.API.Function
             //builder.Services.AddSingleton<IGreetingRepository, MemoryGreetingRepository>();
             builder.Services.AddScoped<IGreetingRepository, BlobGreetingRepository>();
 
-            builder.Services.AddScoped<IUserService, AppSettingsUserService>();
+            builder.Services.AddScoped<IUserService, BlobUserService>();
             builder.Services.AddScoped<IAuthHandler, BasicAuthHandler>();
 
             

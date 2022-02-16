@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using GreetingService.Core.Entities;
 using GreetingService.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace GreetingService.Infrastructure
+namespace GreetingService.Infrastructure.GreetingRepository
 {
     public class BlobGreetingRepository : IGreetingRepository
     {
@@ -54,6 +55,7 @@ namespace GreetingService.Infrastructure
                 await blobclient.DeleteAsync();
                 var binarydata = new BinaryData(greetings);
                 await blobclient.UploadAsync(binarydata);
+
                 
             }
            else

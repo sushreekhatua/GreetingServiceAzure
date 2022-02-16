@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace GreetingService.Infrastructure
+namespace GreetingService.Infrastructure.UserService
 {
     public class AppSettingsUserService : IUserService
     {

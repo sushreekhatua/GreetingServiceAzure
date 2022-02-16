@@ -1,5 +1,6 @@
 using GreetingService.Core.Entities;
 using GreetingService.Infrastructure;
+using GreetingService.Infrastructure.GreetingRepository;
 using System;
 using System.Collections.Generic;
 using System.IO;
