@@ -48,7 +48,7 @@ namespace GreetingService.API.Function
             //    return new FileGreetingRepository(config["FileRepositoryFilePath"]);
             //});
             //builder.Services.AddSingleton<IGreetingRepository, MemoryGreetingRepository>();
-            builder.Services.AddSingleton<IGreetingRepository, BlobGreetingRepository>();
+            builder.Services.AddScoped<IGreetingRepository, BlobGreetingRepository>();
 
             builder.Services.AddScoped<IUserService, AppSettingsUserService>();
             builder.Services.AddScoped<IAuthHandler, BasicAuthHandler>();
