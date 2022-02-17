@@ -89,6 +89,24 @@ namespace GreetingService.Infrastructure.GreetingRepository
             File.WriteAllText(_filepath, JsonSerializer.Serialize(greetings, _jsonSerializerOptions));
         }
 
-       
+        public async Task<IEnumerable<Greeting>> GetAsync(string from, string to)
+        {
+
+            var greetings = await CreateAsync();
+
+            if (!string.IsNullOrWhiteSpace(from))
+                greetings = greetings.Where(x => x.From.Equals(from, StringComparison.OrdinalIgnoreCase));
+
+            if (!string.IsNullOrWhiteSpace(to))
+                greetings = greetings.Where(x => x.To.Equals(to, StringComparison.OrdinalIgnoreCase));
+
+            return greetings;
+
+
+            
+                
+            
+
+        }
     }
 }

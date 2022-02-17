@@ -17,15 +17,19 @@ namespace GreetingService.API.Function
         public async Task Run([BlobTrigger("greetings/{name}", Connection = "LoggingStorageAccount")]Stream greetingJsonblob, [Blob("greetings-csv/{name}", FileAccess.Write, Connection = "LoggingStorageAccount")] Stream greetingCsvBlob, string name, ILogger log)
         {
             log.LogInformation($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {greetingJsonblob.Length} Bytes");
-            var greetings = JsonSerializer.Deserialize<List<Greeting>>(greetingJsonblob);
+
+            //var greetings = JsonSerializer.Deserialize<List<Greeting>>(greetingJsonblob);
+            var greeting = JsonSerializer.Deserialize<Greeting>(greetingJsonblob);
             var streamwriter=new StreamWriter(greetingCsvBlob);
             streamwriter.WriteLine("id;from;to;message;timestamp");
-            foreach(var greeting in greetings)
-            {
-                streamwriter.WriteLine($"{greeting.Id};{greeting.From};{greeting.To};{greeting.Message};{greeting.Time}");
-            }
+            streamwriter.WriteLine($"{greeting.Id};{greeting.From};{greeting.To};{greeting.Message};{greeting.Time}");
+            //foreach (var greeting in greetings)
+            //{
+            //    streamwriter.WriteLine($"{greeting.Id};{greeting.From};{greeting.To};{greeting.Message};{greeting.Time}");
+            //}
             
             await streamwriter.FlushAsync();
         }
+        
     }
 }
