@@ -73,6 +73,7 @@ jobs:
     environment:
       name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      
 
     steps:
       - uses: actions/checkout@v2
