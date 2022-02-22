@@ -88,8 +88,8 @@ jobs:
           azcliversion: 2.30.0
           inlineScript: |
             az group create -l westeurope -n Sadhana-rg4-dev
-            az deployment group create --resource-group Sadhana-rg4-dev --template-file ./azure_resources.bicep --parameters appName=${{ env.AZURE_WEBAPP_NAME }}
-            appName=sadhanafunctionapp4 sqlAdminPassword=${{Secrets.SQL_CREDENTIAL}} 
+            az deployment group create --resource-group Sadhana-rg4-dev --template-file ./azure_resources.bicep --parameters appName=sadhanafunctionapp4 sqlAdminPassword=${{Secrets.SQL_CREDENTIAL}}
+             
 
       - name: Sleep for 45 seconds
         run: sleep 30s
