@@ -92,7 +92,7 @@ jobs:
             az deployment group create --resource-group Sadhana-rg4-dev --template-file ./azure_resources.bicep --parameters appName=sadhanafunctionapp4 sqlAdminPassword=${{Secrets.SQL_CREDENTIAL}}
              
 
-      - name: Sleep for 45 seconds
+      - name: Sleep for 60 seconds
         run: sleep 30s
         shell: bash
 
