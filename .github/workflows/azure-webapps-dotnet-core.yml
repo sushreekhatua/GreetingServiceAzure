@@ -17,6 +17,7 @@
 # For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
 
+
 name: Build and deploy ASP.Net Core app to an Azure Web App
 
 env:
@@ -87,7 +88,7 @@ jobs:
           inlineScript: |
             az group create -l westeurope -n Sadhana-rg4-dev
             az deployment group create --resource-group Sadhana-rg4-dev --template-file ./azure_resources.bicep --parameters appName=${{ env.AZURE_WEBAPP_NAME }}
-            appName=sadhanafunctionapp4 adminLogin=${{secrets.adminLogin}} adminPassword=${{secrets.adminPassword}}
+            appName=sadhanafunctionapp4 sqlAdminPassword=${{secrets.SQL_CREDENTIAL}} 
 
       - name: Sleep for 45 seconds
         run: sleep 30s
