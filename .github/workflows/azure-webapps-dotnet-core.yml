@@ -94,7 +94,7 @@ jobs:
              
 
       - name: Sleep for 60 seconds
-        run: sleep 30s
+        run: sleep 60s
         shell: bash
 
   deploy:
