@@ -63,7 +63,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-        
+
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
@@ -80,7 +80,7 @@ jobs:
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ Secrets.AZURE_CREDENTIALS }}
           
       - name: Azure CLI script
         uses: azure/CLI@v1
@@ -89,7 +89,7 @@ jobs:
           inlineScript: |
             az group create -l westeurope -n Sadhana-rg4-dev
             az deployment group create --resource-group Sadhana-rg4-dev --template-file ./azure_resources.bicep --parameters appName=${{ env.AZURE_WEBAPP_NAME }}
-            appName=sadhanafunctionapp4 sqlAdminPassword=${{secrets.SQL_CREDENTIAL}} 
+            appName=sadhanafunctionapp4 sqlAdminPassword=${{Secrets.SQL_CREDENTIAL}} 
 
       - name: Sleep for 45 seconds
         run: sleep 30s
