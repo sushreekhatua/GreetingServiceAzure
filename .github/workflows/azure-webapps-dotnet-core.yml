@@ -92,7 +92,7 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az group create -l westeurope -n Sadhana-rg3-dev
+            az group create -l northeurope -n Sadhana-rg3-dev
             az deployment group create --resource-group Sadhana-rg3-dev --template-file ./azure_resources.bicep --parameters appName=sadhanafunction3app sqlAdminPassword=${{Secrets.SQL_CREDENTIAL}}
              
 
