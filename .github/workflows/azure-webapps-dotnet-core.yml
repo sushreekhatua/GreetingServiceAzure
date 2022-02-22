@@ -21,7 +21,7 @@
 name: Build and deploy ASP.Net Core app to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: sadhanafunction4app    # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: sadhanafunctionapp4   # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'                 # set this to the .NET Core version to use
 
@@ -73,7 +73,7 @@ jobs:
     environment:
       name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-      
+
 
     steps:
       - uses: actions/checkout@v2
