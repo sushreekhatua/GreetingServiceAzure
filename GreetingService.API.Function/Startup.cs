@@ -4,6 +4,7 @@ using GreetingService.Infrastructure;
 using GreetingService.Infrastructure.GreetingRepository;
 using GreetingService.Infrastructure.UserService;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -33,15 +34,17 @@ namespace GreetingService.API.Function
                 if (string.IsNullOrWhiteSpace(connectionString))
                     return;
 
-                var logName = $"{Assembly.GetCallingAssembly().GetName().Name}.log";
+                var logName = $"Serilog.log";
+               //var logName = $"{Assembly.GetCallingAssembly().GetName().Name}.log";
                 var logger = new LoggerConfiguration()
-                                    .WriteTo.AzureBlobStorage(connectionString,
-                                                              restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
-                                                              storageFileName: "{yyyy}/{MM}/{dd}/" + logName,
-                                                              outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] [{SourceContext}] {Message}{NewLine}{Exception}")
+                                    //.WriteTo.AzureBlobStorage(connectionString,
+                                    //                          restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
+                                    //                          storageFileName: "{yyyy}/{MM}/{dd}/" + logName,
+                                    //                          outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] [{SourceContext}] {Message}{NewLine}{Exception}")
+                                    
                                     .CreateLogger();
 
-                c.AddSerilog(logger, true);
+                c.AddSerilog(logger,true);
             });
 
             //builder.Services.AddScoped<IGreetingRepository, FileGreetingRepository>(c =>
@@ -50,12 +53,20 @@ namespace GreetingService.API.Function
             //    return new FileGreetingRepository(config["FileRepositoryFilePath"]);
             //});
             //builder.Services.AddSingleton<IGreetingRepository, MemoryGreetingRepository>();
-            builder.Services.AddScoped<IGreetingRepository, BlobGreetingRepository>();
+            //builder.Services.AddScoped<IGreetingRepository, BlobGreetingRepository>();
+            builder.Services.AddScoped<IGreetingRepository, SqlGreetingRepository>();
 
             builder.Services.AddScoped<IUserService, BlobUserService>();
+            //builder.Services.AddScoped<IUserService, AppSettingsUserService>();
             builder.Services.AddScoped<IAuthHandler, BasicAuthHandler>();
 
-            
+
+            builder.Services.AddDbContext<GreetingDbContext>(options =>
+            {
+                options.UseSqlServer(config["GreetingDbConnectionString"]);
+            });
+
+
         }
     }
 }

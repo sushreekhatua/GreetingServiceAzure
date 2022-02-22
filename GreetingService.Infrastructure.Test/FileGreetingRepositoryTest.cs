@@ -60,7 +60,7 @@ namespace GreetingService.Infrastructure.Test
         [Fact]
         public async Task test_for_all_truegreeting_files()
         {
-            var checkfiles1=await filegreetingrepo_.CreateAsync();
+            var checkfiles1=await filegreetingrepo_.ReadAsync();
             Assert.NotNull(checkfiles1);
             Assert.True(checkfiles1.Count()>1);
             Assert.Equal(newgreetinglists.Count(), checkfiles1.ToList().Count());
@@ -83,7 +83,7 @@ namespace GreetingService.Infrastructure.Test
         [Fact]
         public async Task post_should_persist_to_file()
         {
-            var greetingsBeforeCreate = await filegreetingrepo_.CreateAsync();
+            var greetingsBeforeCreate = await filegreetingrepo_.ReadAsync();
 
             var newGreeting = new Greeting
             {
@@ -94,7 +94,7 @@ namespace GreetingService.Infrastructure.Test
 
             await filegreetingrepo_.CreateAsync(newGreeting);
 
-            var greetingsAfterCreate = await filegreetingrepo_.CreateAsync();
+            var greetingsAfterCreate = await filegreetingrepo_.ReadAsync();
 
             Assert.Equal(greetingsBeforeCreate.Count() + 1, greetingsAfterCreate.Count());
         }
@@ -102,7 +102,7 @@ namespace GreetingService.Infrastructure.Test
         [Fact]
         public async Task update_should_persist_to_file()
         {
-            var greetings = await filegreetingrepo_.CreateAsync();
+            var greetings = await filegreetingrepo_.ReadAsync();
 
             var firstGreeting = greetings.First();
             var firstGreetingMessage = firstGreeting.Message;

@@ -38,8 +38,8 @@ namespace GreetingService.API.Function
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiParameter(name: "PutGreetings", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IEnumerable<Greeting>), Description = "The OK response")]
-        
-        
+
+
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Greeting")] HttpRequest req)
         {
@@ -56,8 +56,9 @@ namespace GreetingService.API.Function
             }
             catch
             {
-                return new NotFoundResult();            }
-
+                return new NotFoundResult();
+            }
+            
 
 
             return new AcceptedResult();

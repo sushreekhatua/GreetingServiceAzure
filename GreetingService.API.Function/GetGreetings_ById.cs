@@ -20,13 +20,13 @@ namespace GreetingService.API.Function
 {
     public class GetGreetings_ById
     {
-        private readonly ILogger<GetGreetings> _logger;
+        private readonly ILogger<GetGreetings_ById> _logger;
         public readonly IGreetingRepository _greetingRepository;
         private IAuthHandler Authhandler { get; set; }
         private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true, PropertyNameCaseInsensitive = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault };
         private Guid new_id;
 
-        public GetGreetings_ById(ILogger<GetGreetings> log, IGreetingRepository greetingrepository1, IAuthHandler _iauthHandler)
+        public GetGreetings_ById(ILogger<GetGreetings_ById> log, IGreetingRepository greetingrepository1, IAuthHandler _iauthHandler)
         {
             _logger = log;
             _greetingRepository = greetingrepository1;

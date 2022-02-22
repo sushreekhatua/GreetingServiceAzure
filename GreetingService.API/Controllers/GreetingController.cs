@@ -37,7 +37,7 @@ namespace GreetingService.API.Controllers
         public async Task<IEnumerable<Greeting>> GetAsync()
         {
             //_greetingRepository.Create(new Greeting ());
-            return await _greetingRepository.CreateAsync();
+            return await _greetingRepository.ReadAsync();
         }
 
 

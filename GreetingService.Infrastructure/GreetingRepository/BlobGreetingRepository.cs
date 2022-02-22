@@ -88,7 +88,7 @@ namespace GreetingService.Infrastructure.GreetingRepository
         //     return greeting;                      
         //}
 
-        public async Task<IEnumerable<Greeting>> CreateAsync()   //For many blobs
+        public async Task<IEnumerable<Greeting>> ReadAsync()   //For many blobs
         {
             var greetings = new List<Greeting>();
             var blobs = _blobContainerClient.GetBlobsAsync();

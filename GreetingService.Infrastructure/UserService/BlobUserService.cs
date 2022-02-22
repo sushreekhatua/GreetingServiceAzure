@@ -15,7 +15,7 @@ namespace GreetingService.Infrastructure.UserService
         private readonly BlobContainerClient _blobContainerClient;
         private readonly string _blobContainerName="users";
         public readonly string _blobname = "users.json";
-        private readonly ILogger _logger;
+        private readonly ILogger<BlobUserService> _logger;
 
 
         public BlobUserService(IConfiguration configuration, ILogger<BlobUserService> logger)

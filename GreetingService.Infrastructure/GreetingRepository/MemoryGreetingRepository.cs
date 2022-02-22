@@ -38,7 +38,7 @@ namespace GreetingService.Infrastructure.GreetingRepository
             return newrepo;
         }
 
-        public async Task<IEnumerable<Greeting>> CreateAsync()
+        public async Task<IEnumerable<Greeting>> ReadAsync()
         {
             return _repository;
         }
@@ -57,7 +57,7 @@ namespace GreetingService.Infrastructure.GreetingRepository
 
         public async Task<IEnumerable<Greeting>> GetAsync(string from, string to)
         {
-            var greetings = await CreateAsync();
+            var greetings = await ReadAsync();
 
             if (!string.IsNullOrWhiteSpace(from))
                 greetings = greetings.Where(x => x.From.Equals(from, StringComparison.OrdinalIgnoreCase));

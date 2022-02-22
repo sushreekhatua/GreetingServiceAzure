@@ -51,7 +51,7 @@ namespace GreetingService.Infrastructure.GreetingRepository
         }
 
         //Get all greetings
-        public async Task<IEnumerable<Greeting>> CreateAsync()
+        public async Task<IEnumerable<Greeting>> ReadAsync()
         {
             var content = File.ReadAllText(_filepath);
             var greetings = JsonSerializer.Deserialize<IList<Greeting>>(content);
@@ -92,7 +92,7 @@ namespace GreetingService.Infrastructure.GreetingRepository
         public async Task<IEnumerable<Greeting>> GetAsync(string from, string to)
         {
 
-            var greetings = await CreateAsync();
+            var greetings = await ReadAsync();
 
             if (!string.IsNullOrWhiteSpace(from))
                 greetings = greetings.Where(x => x.From.Equals(from, StringComparison.OrdinalIgnoreCase));
