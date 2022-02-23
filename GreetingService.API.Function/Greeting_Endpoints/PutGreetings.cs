@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
-namespace GreetingService.API.Function
+namespace GreetingService.API.Function.Greeting_Endpoints
 {
     public class PutGreetings
     {
@@ -41,30 +41,28 @@ namespace GreetingService.API.Function
 
 
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Greeting")] HttpRequest req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "User/{id}")] HttpRequest req, string id)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             var body = await req.ReadAsStringAsync();
             var greetings = System.Text.Json.JsonSerializer.Deserialize<Greeting>(body, _jsonSerializerOptions);
 
-            if (!Authhandler.IsAuthorized(req))
-                return new UnauthorizedResult();
-
-            try
+            if (Authhandler.IsAuthorized(req))
             {
-                await _greetingRepository.UpdateAsync(greetings);
+
+                try
+                {
+                    await _greetingRepository.UpdateAsync(greetings);
+                    return new AcceptedResult();
+                }
+                catch
+                {
+                    return new NotFoundResult();
+                }
             }
-            catch
-            {
-                return new NotFoundResult();
-            }
+            return new UnauthorizedResult();
             
-
-
-            return new AcceptedResult();
-        }
-
-            
+        }            
         
     }
 }

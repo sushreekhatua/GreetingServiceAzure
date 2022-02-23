@@ -1,4 +1,5 @@
 ﻿using GreetingService.Core;
+using GreetingService.Core.Entities;
 using GreetingService.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,26 @@ namespace GreetingService.Infrastructure.UserService
             { "sadhana","summer2022" },
             { "maria","winter2022" },
         };
+
+        public async Task CreateAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+      
+
+        public async Task DeleteAsync(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+       
+
+        public async Task<User> GetAsync(string email)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsValidUser(string username, string password)
         {
             if (!_users.TryGetValue(username, out var storedPassword))              //user does not exist
@@ -24,6 +45,16 @@ namespace GreetingService.Infrastructure.UserService
                 return false;
 
             return true;
+        }
+
+        public async Task<IEnumerable<User>> ReadAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateAsync(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

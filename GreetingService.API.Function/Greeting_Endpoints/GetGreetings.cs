@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft;
 
-namespace GreetingService.API.Function
+namespace GreetingService.API.Function.Greeting_Endpoints
 {
     public class GetGreetings
     {
@@ -45,21 +45,24 @@ namespace GreetingService.API.Function
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            if (!Authhandler.IsAuthorized(req))
-                return new UnauthorizedResult();
+            if ( Authhandler.IsAuthorized(req))
+            {
+                try
+                {
+                    var from = req.Query["from"];
+                    var to = req.Query["to"];
+                    var greetings = await _greetingRepository.GetAsync(from, to);
+                    return new OkObjectResult(greetings);
+                }
+                catch
+                {
+                    return new NotFoundResult();
+                }
+            }
+            return new UnauthorizedResult();
 
 
-            try
-            {
-                var from = req.Query["from"];
-                var to = req.Query["to"];
-                var greetings = await _greetingRepository.GetAsync(from,to);
-                return new OkObjectResult(greetings);
-            }
-            catch
-            {
-                return new NotFoundResult();
-            }
+           
 
 
 

@@ -13,10 +13,12 @@ namespace GreetingService.Infrastructure.GreetingRepository
     public class SqlGreetingRepository : IGreetingRepository
     {
         private readonly GreetingDbContext _greetingDbContext;
+        private readonly ILogger<SqlGreetingRepository> _logger;
 
-        public SqlGreetingRepository(GreetingDbContext greetingDbContext)
+        public SqlGreetingRepository(GreetingDbContext greetingDbContext, ILogger<SqlGreetingRepository> logger)
         {
             _greetingDbContext = greetingDbContext;
+            _logger = logger;
         }
 
 

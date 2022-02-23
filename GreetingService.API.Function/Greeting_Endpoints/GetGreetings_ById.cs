@@ -16,7 +16,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft;
 using Newtonsoft.Json;
 
-namespace GreetingService.API.Function
+namespace GreetingService.API.Function.Greeting_Endpoints
 {
     public class GetGreetings_ById
     {
@@ -53,19 +53,22 @@ namespace GreetingService.API.Function
 
             //greetings.Id = id;
 
-            if (!Authhandler.IsAuthorized(req))
-                return new UnauthorizedResult();
+            if (Authhandler.IsAuthorized(req))
+            {
+                try
+                {
+                    Guid.TryParse(id, out new_id);
+                    var greeting = await _greetingRepository.GetAsync(new_id);
+                    return new OkObjectResult(greeting);
+                }
+                catch
+                {
+                    return new NotFoundResult();
+                }
+            }
+            return new UnauthorizedResult();
 
-            try
-            {
-                Guid.TryParse(id, out new_id);
-                var greeting = await _greetingRepository.GetAsync(new_id);
-                return new OkObjectResult(greeting);
-            }
-            catch
-            {
-                return new NotFoundResult();
-            }
+           
             
         }
 

@@ -1,4 +1,5 @@
-﻿using GreetingService.Core.Interfaces;
+﻿using GreetingService.Core.Entities;
+using GreetingService.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -34,6 +35,25 @@ namespace GreetingService.Infrastructure.UserService
             _logger = logger;
         }
 
+        public async Task CreateAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        public async Task DeleteAsync(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        public async Task<User> GetAsync(string email)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsValidUser(string username, string password)
         {
             var entries = _configuration.AsEnumerable().ToDictionary(x => x.Key, x => x.Value);
@@ -48,6 +68,16 @@ namespace GreetingService.Infrastructure.UserService
 
             _logger.LogWarning("Invalid credentials for {username}", username);
             return false;
+        }
+
+        public async Task<IEnumerable<User>> ReadAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateAsync(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

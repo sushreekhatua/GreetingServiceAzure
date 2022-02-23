@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft;
 
-namespace GreetingService.API.Function
+namespace GreetingService.API.Function.Greeting_Endpoints
 {
     public class PostGreetings
     {
@@ -54,24 +54,21 @@ namespace GreetingService.API.Function
             //                                                Name="Keen",
             //                                        Message= "mr blobby"});
 
-            if (!Authhandler.IsAuthorized(req))
-                return new UnauthorizedResult();
-
-            try
+            if (Authhandler.IsAuthorized(req))
             {
-                await _greetingRepository.CreateAsync(greetings);
-            }
-            catch
-            {
-                return new ConflictResult();
-            }
+                try
+                {
+                    await _greetingRepository.CreateAsync(greetings);
+                }
+                catch
+                {
+                    return new ConflictResult();
+                }
 
-            return new AcceptedResult();
-
+                return new AcceptedResult();
+            }
+            return new UnauthorizedResult();
            
-        }
-
-        
-
+        }        
     }
 }

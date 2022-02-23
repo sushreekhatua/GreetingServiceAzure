@@ -9,7 +9,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
-namespace GreetingService.API.Function
+namespace GreetingService.API.Function.Greeting_Endpoints
 {
     public class ConvertGreetingToCsv
     {
