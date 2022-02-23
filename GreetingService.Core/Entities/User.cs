@@ -8,12 +8,12 @@ namespace GreetingService.Core.Entities
 {
     public class User
     {
-        public string? first_name {get; set;}
-        public string? last_name { get; set;}
-        public string? email { get; set; }
-        public string? password { get; set; }
-        public DateTime created { get; set; }= DateTime.Now;
-        public DateTime modified { get; set; }=DateTime.Now;
+        public string? First_name {get; set;}
+        public string? Last_name { get; set;}
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public DateTime Created { get; set; }= DateTime.Now;
+        public DateTime Modified { get; set; }=DateTime.Now;
 
     }
 }

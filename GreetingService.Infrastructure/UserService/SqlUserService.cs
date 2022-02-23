@@ -28,21 +28,21 @@ namespace GreetingService.Infrastructure.UserService
 
         public async Task DeleteAsync(string Email)
         {
-            var deleteuser=_greetingDbContext.Users.FirstOrDefault(x => x.email == Email);
+            var deleteuser=_greetingDbContext.Users.FirstOrDefault(x => x.Email == Email);
             _greetingDbContext.Users.Remove(deleteuser);
             await _greetingDbContext.SaveChangesAsync();
         }
 
         public async Task<User> GetAsync(string Email)
         {
-            var newuser=await _greetingDbContext.Users.FirstOrDefaultAsync(x => x.email == Email);
+            var newuser=await _greetingDbContext.Users.FirstOrDefaultAsync(x => x.Email == Email);
             return newuser;
         }
 
         public bool IsValidUser(string username, string Password)
         {
-            var user = _greetingDbContext.Users.FirstOrDefault(x => x.email == username);
-            if(user != null && user.password==Password)
+            var user = _greetingDbContext.Users.FirstOrDefault(x => x.Email == username);
+            if(user != null && user.Password==Password)
                 return true;
 
             return false;
@@ -56,13 +56,13 @@ namespace GreetingService.Infrastructure.UserService
 
         public async Task UpdateAsync(User user)
         {
-           var existinguser=await _greetingDbContext.Users.FirstOrDefaultAsync(x =>x.email == user.email);
+           var existinguser=await _greetingDbContext.Users.FirstOrDefaultAsync(x =>x.Email == user.Email);
             if (existinguser == null)
-                throw new Exception($"User with email : {user.email} not found");
+                throw new Exception($"User with email : {user.Email} not found");
 
-            existinguser.first_name=user.first_name;
-            existinguser.last_name=user.last_name;
-            existinguser.password=user.password;
+            existinguser.First_name=user.First_name;
+            existinguser.Last_name=user.Last_name;
+            existinguser.Password=user.Password;
 
             await _greetingDbContext.SaveChangesAsync();  
         }

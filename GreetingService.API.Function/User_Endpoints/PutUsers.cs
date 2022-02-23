@@ -46,7 +46,7 @@ namespace GreetingService.API.Function.User_Endpoints
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             var body = await req.ReadAsStringAsync();
-            var users = System.Text.Json.JsonSerializer.Deserialize<User>(body, _jsonSerializerOptions);
+            var users = JsonSerializer.Deserialize<User>(body, _jsonSerializerOptions);
 
             if (Authhandler.IsAuthorized(req))
             {
