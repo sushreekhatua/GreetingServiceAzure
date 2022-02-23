@@ -34,7 +34,7 @@ namespace GreetingService.API.Function.User_Endpoints
 
 
 
-        [FunctionName("DeleteUsers_ById")]
+        [FunctionName("DeleteUsers_ByEmail")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "User" })]
         // [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IEnumerable<User>), Description = "The OK response")]
