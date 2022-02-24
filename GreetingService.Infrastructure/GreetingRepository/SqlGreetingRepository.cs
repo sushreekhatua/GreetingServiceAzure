@@ -25,15 +25,31 @@ namespace GreetingService.Infrastructure.GreetingRepository
         //To read the greetings
         public async Task<IEnumerable<Greeting>> ReadAsync()
         {
-            var listofgreetings =await _greetingDbContext.Greetings.ToListAsync();
-                     
-            return listofgreetings;
+            try
+            {
+                var listofgreetings = await _greetingDbContext.Greetings.ToListAsync();
+
+                return listofgreetings;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+           
         }
 
         public async Task CreateAsync(Greeting greeting)
         {
-            await _greetingDbContext.Greetings.AddAsync(greeting);
-            await _greetingDbContext.SaveChangesAsync();
+            try
+            {
+                await _greetingDbContext.Greetings.AddAsync(greeting);
+                await _greetingDbContext.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+            }
+            
         }
 
         public async Task DeleteAsync(Guid id)
