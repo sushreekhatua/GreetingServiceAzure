@@ -21,7 +21,7 @@
 name: Build and deploy ASP.Net Core app to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: 'sadhanafunction4app'  # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: 'sadhanafunction3app'  # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'                 # set this to the .NET Core version to use
 
@@ -92,12 +92,12 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az group create -l westeurope -n Sadhana-rg4-dev
-            az deployment group create --resource-group Sadhana-rg4-dev --template-file ./azure_resources.bicep --parameters appName=sadhanafunction4app sqlAdminPassword=${{Secrets.SQL_CREDENTIAL}}
+            az group create -l northeurope -n Sadhana-rg3-dev
+            az deployment group create --resource-group Sadhana-rg3-dev --template-file ./azure_resources.bicep --parameters appName=sadhanafunction3app sqlAdminPassword=${{Secrets.SQL_CREDENTIAL}}
              
 
-      - name: Sleep for 60 seconds
-        run: sleep 60s
+      - name: Sleep for 120 seconds
+        run: sleep 120s
         shell: bash
 
   deploy:
