@@ -29,26 +29,26 @@ namespace GreetingService.Infrastructure.Test
                 new Greeting()
                 {
                     Name ="Sadhana",
-                    To ="Sweden",
-                    From ="India",
+                    To ="Sweden@gmail.com",
+                    From ="India@gmail.com",
                 },
                 new Greeting()
                 {
                     Name ="Sadhana1",
-                    To ="Sweden1",
-                    From ="India1",
+                    To ="Sweden@gmail.com",
+                    From ="India@gmail.com",
                 },
                 new Greeting()
                 {
                     Name ="Sadhana2",
-                    To ="Sweden2",
-                    From ="India2",
+                    To ="Sweden2@gmail.com",
+                    From ="India@gmail.com",
                 },
                 new Greeting()
                 {
                     Name ="Sadhana3",
-                    To ="Sweden3",
-                    From ="India3",
+                    To ="Sweden3@gmail.com",
+                    From ="India@gmail.com",
                 }
             };
             File.WriteAllText(filepath, JsonSerializer.Serialize(newgreetinglists, _jsonSerializerOptions));
@@ -87,8 +87,8 @@ namespace GreetingService.Infrastructure.Test
 
             var newGreeting = new Greeting
             {
-                From = "post_test",
-                To = "post_test",
+                From = "post_test@gmail.com",
+                To = "post_test@gmail.com",
                 Message = "post_test",
             };
 
