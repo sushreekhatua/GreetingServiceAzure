@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GreetingService.API.Function.Authentication;
 using GreetingService.Core.Entities;
+using GreetingService.Core.Exceptions;
 using GreetingService.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,8 +48,7 @@ namespace GreetingService.API.Function.Greeting_Endpoints
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
 
-            var body = await req.ReadAsStringAsync();
-            var greetings = JsonSerializer.Deserialize<Greeting>(body,_jsonSerializerOptions);
+            
 
             //_greetingRepository.Create(new Greeting() { To="Stockholm",
             //                                             From= "Helloöööö",
@@ -58,8 +59,17 @@ namespace GreetingService.API.Function.Greeting_Endpoints
             {
                 try
                 {
+                    var body = await req.ReadAsStringAsync();
+                    var greetings = JsonSerializer.Deserialize<Greeting>(body, _jsonSerializerOptions);
                     await _greetingRepository.CreateAsync(greetings);
                 }
+                catch (InvalidEmailException e)
+                {
+                   
+                    return new BadRequestObjectResult(e.Message);
+                }
+
+               
                 catch
                 {
                     return new ConflictResult();

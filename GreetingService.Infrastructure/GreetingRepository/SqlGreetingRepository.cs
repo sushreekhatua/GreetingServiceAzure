@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using GreetingService.Core.Exceptions;
 
 namespace GreetingService.Infrastructure.GreetingRepository
 {
@@ -14,6 +16,7 @@ namespace GreetingService.Infrastructure.GreetingRepository
     {
         private readonly GreetingDbContext _greetingDbContext;
         private readonly ILogger<SqlGreetingRepository> _logger;
+       
 
         public SqlGreetingRepository(GreetingDbContext greetingDbContext, ILogger<SqlGreetingRepository> logger)
         {
@@ -40,16 +43,17 @@ namespace GreetingService.Infrastructure.GreetingRepository
 
         public async Task CreateAsync(Greeting greeting)
         {
+
             try
             {
                 await _greetingDbContext.Greetings.AddAsync(greeting);
                 await _greetingDbContext.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogInformation(ex.Message);
             }
-            
+
         }
 
         public async Task DeleteAsync(Guid id)
