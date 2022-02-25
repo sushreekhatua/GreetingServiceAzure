@@ -56,8 +56,8 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
-      # - name: Test
-      #   run: dotnet test --no-restore --verbosity normal
+      - name: Test with dotnet
+        run: dotnet test #--no-restore --verbosity normal
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
