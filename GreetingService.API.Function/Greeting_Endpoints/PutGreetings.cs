@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using GreetingService.API.Function.Authentication;
 using GreetingService.Core.Entities;
+using GreetingService.Core.Exceptions;
 using GreetingService.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,11 @@ namespace GreetingService.API.Function.Greeting_Endpoints
                 {
                     await _greetingRepository.UpdateAsync(greetings);
                     return new AcceptedResult();
+                }
+                catch (InvalidEmailException e)
+                {
+
+                    return new BadRequestObjectResult(e.Message);
                 }
                 catch
                 {
