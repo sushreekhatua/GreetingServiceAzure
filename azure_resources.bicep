@@ -205,6 +205,19 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2018-01-01-preview
         }
       }      
     }
+    resource Greeting_Compute_invoiceSubscription 'subscriptions@2021-06-01-preview' = {
+      name: 'greetingcomputeinvoice_create'
+
+      resource rule 'rules@2021-06-01-preview' = {
+        name: 'subject'
+        properties: {
+          correlationFilter: {
+            label: 'Newgreeting'
+          }
+          filterType: 'CorrelationFilter'
+        }
+      }      
+    }
   }  
 }
 
