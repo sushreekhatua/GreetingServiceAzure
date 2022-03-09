@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using GreetingService.Core.Entities;
 using GreetingService.Core.Interfaces;
@@ -20,13 +21,21 @@ namespace GreetingService.API.Function.Greeting_Endpoints
         }
 
         [FunctionName("SbCreateGreeting")]
-        public async Task Run([ServiceBusTrigger("main", "greeting_create", Connection = "ServiceBusConnectionString")] Greeting greeting)
+        public async Task Run([ServiceBusTrigger("main", "greeting_create", Connection = "ServiceBusConnectionString")] string greeting)
         {
             _logger.LogInformation($"C# ServiceBus topic trigger function processed message: {greeting}");
-
+            
+            var g=JsonSerializer.Deserialize<Greeting> (greeting);
+            
             try
             {
-                await _greetingRepository.CreateAsync(greeting);
+                var existinggreeting = await _greetingRepository.GetAsync(g.Id);
+                if(existinggreeting==null)
+                    await _greetingRepository.CreateAsync(g);
+
+                await _greetingRepository.UpdateAsync(g);
+                //throw new Exception($"The id with {g.Id} already exists");
+                
             }
             catch (Exception e)
             {

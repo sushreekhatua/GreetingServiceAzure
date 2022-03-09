@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -5,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using GreetingService.API.Function.Authentication;
 using GreetingService.Core.Entities;
+using GreetingService.Core.Enums;
 using GreetingService.Core.Exceptions;
 using GreetingService.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -22,15 +24,16 @@ namespace GreetingService.API.Function.Greeting_Endpoints
     public class PutGreetings
     {
         private readonly ILogger<PutGreetings> _logger;
-        public readonly IGreetingRepository _greetingRepository;
+        //public readonly IGreetingRepository _greetingRepository;
+        private readonly IMessagingService _messagingService;
         private IAuthHandler Authhandler { get; set; }
         private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true,PropertyNameCaseInsensitive = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault };
     
 
-        public PutGreetings(ILogger<PutGreetings> log, IGreetingRepository greetingrepository1, IAuthHandler _iauthHandler)
+        public PutGreetings(ILogger<PutGreetings> log, IMessagingService messagingService, IAuthHandler _iauthHandler)
         {
             _logger = log;
-            _greetingRepository = greetingrepository1;
+            _messagingService = messagingService;
             Authhandler = _iauthHandler;
         }
 
@@ -42,29 +45,38 @@ namespace GreetingService.API.Function.Greeting_Endpoints
 
 
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "User/{id}")] HttpRequest req, string id)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Greeting/{id}")] HttpRequest req, string id)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-            var body = await req.ReadAsStringAsync();
-            var greetings = System.Text.Json.JsonSerializer.Deserialize<Greeting>(body, _jsonSerializerOptions);
+            
 
             if (Authhandler.IsAuthorized(req))
             {
-
+                Greeting greetings;
                 try
                 {
-                    await _greetingRepository.UpdateAsync(greetings);
-                    return new AcceptedResult();
+                    var body = await req.ReadAsStringAsync();
+                    greetings = System.Text.Json.JsonSerializer.Deserialize<Greeting>(body, _jsonSerializerOptions);
+                    //await _greetingRepository.UpdateAsync(greetings);
+                    //return new AcceptedResult();
                 }
-                catch (InvalidEmailException e)
+                //catch (InvalidEmailException e)
+                catch(Exception e)
                 {
 
                     return new BadRequestObjectResult(e.Message);
                 }
+                try
+                {
+                    await _messagingService.SendAsync(greetings, MessagingServiceSubject.updategreeting);
+                }
                 catch
                 {
-                    return new NotFoundResult();
+                    return new ConflictResult();
                 }
+
+                //AcceptedObject Result
+                return new AcceptedResult();
             }
             return new UnauthorizedResult();
             

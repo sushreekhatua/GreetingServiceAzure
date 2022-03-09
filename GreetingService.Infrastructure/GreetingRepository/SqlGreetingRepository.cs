@@ -69,6 +69,9 @@ namespace GreetingService.Infrastructure.GreetingRepository
         public async Task<Greeting> GetAsync(Guid id)
         {
             var newidgreeting= await _greetingDbContext.Greetings.FirstOrDefaultAsync(x => x.Id == id);
+            //if(newidgreeting==null)
+            //    throw new Exception("Not found");
+            
             return newidgreeting;
         }
 

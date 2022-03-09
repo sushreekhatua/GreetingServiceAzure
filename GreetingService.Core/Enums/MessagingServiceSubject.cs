@@ -8,6 +8,7 @@ namespace GreetingService.Core.Enums
 {
     public enum MessagingServiceSubject
     {
-        NewGreeting
+        NewGreeting,
+        updategreeting
     }
 }
