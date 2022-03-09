@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using GreetingService.API.Function.Authentication;
 using GreetingService.Core.Entities;
+using GreetingService.Core.Enums;
 using GreetingService.Core.Exceptions;
 using GreetingService.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -21,15 +22,16 @@ namespace GreetingService.API.Function.Greeting_Endpoints
     public class PostGreetings
     {
         private readonly ILogger<PostGreetings> _logger;
-        public readonly IGreetingRepository _greetingRepository;
+        //public readonly IGreetingRepository _greetingRepository;
+        private readonly IMessagingService _messagingService;
         private IAuthHandler Authhandler { get; set; }
         private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true, PropertyNameCaseInsensitive = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault };
+        
 
-
-        public PostGreetings(ILogger<PostGreetings> log, IGreetingRepository greetingrepository1, IAuthHandler _iauthHandler)
+        public PostGreetings(ILogger<PostGreetings> log, IMessagingService messagingService, IAuthHandler _iauthHandler)
         {
             _logger = log;
-            _greetingRepository = greetingrepository1;
+           _messagingService = messagingService;
             Authhandler = _iauthHandler;
         }
 
@@ -48,28 +50,34 @@ namespace GreetingService.API.Function.Greeting_Endpoints
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
 
-            
+
 
             //_greetingRepository.Create(new Greeting() { To="Stockholm",
             //                                             From= "Helloöööö",
             //                                                Name="Keen",
             //                                        Message= "mr blobby"});
-
+           
             if (Authhandler.IsAuthorized(req))
             {
+                Greeting greetings;
+
                 try
                 {
                     var body = await req.ReadAsStringAsync();
-                    var greetings = JsonSerializer.Deserialize<Greeting>(body, _jsonSerializerOptions);
-                    await _greetingRepository.CreateAsync(greetings);
+                    greetings = JsonSerializer.Deserialize<Greeting>(body, _jsonSerializerOptions);
+                    //await _greetingRepository.CreateAsync(greetings);
                 }
-                catch (InvalidEmailException e)
+                //catch (InvalidEmailException e)
+                catch (Exception e)
                 {
                    
                     return new BadRequestObjectResult(e.Message);
                 }
+                try
+                {
+                    await _messagingService.SendAsync(greetings, MessagingServiceSubject.NewGreeting);
+                }
 
-               
                 catch
                 {
                     return new ConflictResult();

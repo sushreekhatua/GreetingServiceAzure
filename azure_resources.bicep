@@ -11,6 +11,7 @@ var functionAppName = '${appName}'
 var loggingStorageAccountName = '${substring(appName,0,7)}log${uniqueString(resourceGroup().id)}'
 var sqlServerName = '${appName}sqlserver'
 var sqlDbName = '${appName}sqldb'
+var serviceBusName = '${appName}servicebus'
 
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
@@ -102,6 +103,10 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
           name: 'GreetingDbConnectionString'
           value: 'Data Source=tcp:${reference(sqlServer.id).fullyQualifiedDomainName},1433;Initial Catalog=${sqlDbName};User Id=${sqlAdminUser};Password=\'${sqlAdminPassword}\';'
         }
+        {
+          name:'ServiceBusConnectionString'
+          value: listKeys('${serviceBusNamespace.id}/AuthorizationRules/RootManageSharedAccessKey', serviceBusNamespace.apiVersion).primaryConnectionString
+        }
         // WEBSITE_CONTENTSHARE will also be auto-generated - https://docs.microsoft.com/en-us/azure/azure-functions/functions-app-settings#website_contentshare
         // WEBSITE_RUN_FROM_PACKAGE will be set to 1 by func azure functionapp publish
       ]
@@ -133,6 +138,31 @@ resource sqlServer 'Microsoft.Sql/servers@2019-06-01-preview' = {
       name: 'Basic'
       tier: 'Basic'
       capacity: 5
+    }
+  }
+}
+resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' = {
+  name: serviceBusName
+  location: location
+  sku: {
+    name: 'Standard'
+  }
+
+  resource mainTopic 'topics@2021-06-01-preview' = {
+    name: 'main'
+
+    resource greetingCreateSubscription 'subscriptions@2021-06-01-preview' = {
+      name: 'greeting_create'
+
+      resource rule 'rules@2021-06-01-preview' = {
+        name: 'subject'
+        properties: {
+          correlationFilter: {
+            label: 'NewGreeting'
+          }
+          filterType: 'CorrelationFilter'
+        }
+      }
     }
   }
 }
