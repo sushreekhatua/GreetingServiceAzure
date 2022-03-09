@@ -177,6 +177,34 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2018-01-01-preview
         }
       }      
     }
+
+    resource UserCreateSubscription 'subscriptions@2021-06-01-preview' = {
+      name: 'user_create'
+
+      resource rule 'rules@2021-06-01-preview' = {
+        name: 'subject'
+        properties: {
+          correlationFilter: {
+            label: 'newuser'
+          }
+          filterType: 'CorrelationFilter'
+        }
+      }      
+    }
+
+    resource UserUpdateSubscription 'subscriptions@2021-06-01-preview' = {
+      name: 'user_update'
+
+      resource rule 'rules@2021-06-01-preview' = {
+        name: 'subject'
+        properties: {
+          correlationFilter: {
+            label: 'updateuser'
+          }
+          filterType: 'CorrelationFilter'
+        }
+      }      
+    }
   }  
 }
 

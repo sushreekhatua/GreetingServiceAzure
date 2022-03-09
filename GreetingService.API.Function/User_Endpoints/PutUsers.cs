@@ -1,5 +1,6 @@
 ﻿using GreetingService.API.Function.Authentication;
 using GreetingService.Core.Entities;
+using GreetingService.Core.Enums;
 using GreetingService.Core.Exceptions;
 using GreetingService.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -23,15 +24,16 @@ namespace GreetingService.API.Function.User_Endpoints
     public class PutUsers
     {
         private readonly ILogger<PutUsers> _logger;
-        public readonly IUserService _userservice;
+        //public readonly IUserService _userservice;
+        private readonly IMessagingService _messagingService;
         private IAuthHandler Authhandler { get; set; }
         private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true, PropertyNameCaseInsensitive = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault };
 
 
-        public PutUsers(ILogger<PutUsers> log, IUserService userservice, IAuthHandler _iauthHandler)
+        public PutUsers(ILogger<PutUsers> log, IMessagingService messagingService, IAuthHandler _iauthHandler)
         {
             _logger = log;
-            _userservice = userservice;
+            _messagingService = messagingService;
             Authhandler = _iauthHandler;
         }
 
@@ -43,29 +45,39 @@ namespace GreetingService.API.Function.User_Endpoints
 
 
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "User")] HttpRequest req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "User/{email}")] HttpRequest req,string email)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-            var body = await req.ReadAsStringAsync();
-            var users = JsonSerializer.Deserialize<User>(body, _jsonSerializerOptions);
+            
 
             if (Authhandler.IsAuthorized(req))
             {
-
+                User user1;
                 try
                 {
-                    await _userservice.UpdateAsync(users);
-                    return new AcceptedResult();
+                    
+                    var body = await req.ReadAsStringAsync();
+                    user1 = JsonSerializer.Deserialize<User>(body, _jsonSerializerOptions);
+                    //await _userservice.UpdateAsync(users);
+                    //return new AcceptedResult();
                 }
-                catch (InvalidEmailException e)
+                //catch (InvalidEmailException e)
+                catch(Exception e)
                 {
 
                     return new BadRequestObjectResult(e.Message);
                 }
+                try
+                {
+                    await _messagingService.SendAsync(user1, MessagingServiceSubject.updateuser);
+                }
                 catch
                 {
-                    return new NotFoundResult();
+                    return new ConflictResult();
                 }
+
+                //AcceptedObject Result
+                return new AcceptedResult();
             }
             return new UnauthorizedResult();
 

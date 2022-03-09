@@ -1,5 +1,6 @@
 ﻿using GreetingService.API.Function.Authentication;
 using GreetingService.Core.Entities;
+using GreetingService.Core.Enums;
 using GreetingService.Core.Exceptions;
 using GreetingService.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -22,15 +23,16 @@ namespace GreetingService.API.Function.User_Endpoints
     public class PostUsers
     {
         private readonly ILogger<PostUsers> _logger;
-        public readonly IUserService _userservice;
+        //public readonly IUserService _userservice;
+        private readonly IMessagingService _messagingService;
         private IAuthHandler Authhandler { get; set; }
         private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true, PropertyNameCaseInsensitive = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault };
 
 
-        public PostUsers(ILogger<PostUsers> log, IUserService userservice, IAuthHandler _iauthHandler)
+        public PostUsers(ILogger<PostUsers> log, IMessagingService messagingService, IAuthHandler _iauthHandler)
         {
             _logger = log;
-            _userservice = userservice;
+            _messagingService = messagingService;
             Authhandler = _iauthHandler;
         }
 
@@ -49,8 +51,7 @@ namespace GreetingService.API.Function.User_Endpoints
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
 
-            var body = await req.ReadAsStringAsync();
-            var users = JsonSerializer.Deserialize<User>(body, _jsonSerializerOptions);
+            
 
             //_userservice.CreateAsync(new User()
             //{
@@ -62,14 +63,22 @@ namespace GreetingService.API.Function.User_Endpoints
 
             if (Authhandler.IsAuthorized(req))
             {
+                User user;
                 try
                 {
-                    await _userservice.CreateAsync(users);
+                    var body = await req.ReadAsStringAsync();
+                    user = JsonSerializer.Deserialize<User>(body, _jsonSerializerOptions);
+                    //await _userservice.CreateAsync(users);
                 }
-                catch (InvalidEmailException e)
+               // catch (InvalidEmailException e)
+                catch(Exception e)
                 {
 
                     return new BadRequestObjectResult(e.Message);
+                }
+                try
+                {
+                    await _messagingService.SendAsync(user, MessagingServiceSubject.newuser);
                 }
                 catch
                 {
