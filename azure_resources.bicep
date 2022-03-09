@@ -205,8 +205,8 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2018-01-01-preview
         }
       }      
     }
-    resource Greeting_Compute_invoiceSubscription 'subscriptions@2021-06-01-preview' = {
-      name: 'greetingcomputeinvoice_create'
+    resource Greeting_Compute_billingSubscription 'subscriptions@2021-06-01-preview' = {
+      name: 'greeting_compute_billing'
 
       resource rule 'rules@2021-06-01-preview' = {
         name: 'subject'
