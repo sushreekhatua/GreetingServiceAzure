@@ -33,7 +33,7 @@ namespace GreetingService.API.Function.Greeting_Endpoints
                 if(existinggreeting==null)
                     await _greetingRepository.CreateAsync(g);
 
-                await _greetingRepository.UpdateAsync(g);
+               
                 //throw new Exception($"The id with {g.Id} already exists");
                 
             }
