@@ -52,7 +52,7 @@ namespace GreetingService.API.Function.Invoice_Endpoints
                 }
                 else if(!newinvoice.Greetings.Any(x=>x.Id==greeting.Id))
                 {
-                    newinvoice.Greetings.Append(greeting);
+                    newinvoice.Greetings=newinvoice.Greetings.Append(greeting).ToList();
                     await _invoiceservice.CreateOrUpdateInvoiceAsync(newinvoice);
                 }
                 

@@ -18,5 +18,8 @@ namespace GreetingService.Core.Interfaces
         public Task DeleteAsync(string email);
         //public Task<IEnumerable<User>> GetAsync(string from, string to);
 
+        public Task ApproveUserAsync(string approvalCode);
+        public Task RejectUserAsync(string approvalCode);
+
     }
 }

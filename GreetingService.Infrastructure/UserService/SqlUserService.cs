@@ -1,4 +1,5 @@
 ﻿using GreetingService.Core.Entities;
+using GreetingService.Core.Exceptions;
 using GreetingService.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -22,21 +23,46 @@ namespace GreetingService.Infrastructure.UserService
 
         public async Task CreateAsync(User user)
         {
+            var existinguser = await _greetingDbContext.Users.FirstOrDefaultAsync(x => x.Email == user.Email && x.Approvalstatus != ApprovalStatus.Approved);
+            if (await _greetingDbContext.Users.AnyAsync(x => x.Email == user.Email && x.Approvalstatus == ApprovalStatus.Approved))
+            {
+                return;
+            }
+            else if (existinguser != null)
+            {
+                _greetingDbContext.Users.Remove(existinguser);
+            }
+
+            user.Created = DateTime.Now;
+            user.Modified = DateTime.Now;
+            user.Approvalstatus = ApprovalStatus.Pending;
+            user.ApprovalStatusNote = "Awaiting approval from administrator";
             await _greetingDbContext.Users.AddAsync(user);
             await _greetingDbContext.SaveChangesAsync();
+
         }
 
         public async Task DeleteAsync(string Email)
+
         {
-            var deleteuser=_greetingDbContext.Users.FirstOrDefault(x => x.Email == Email);
-            _greetingDbContext.Users.Remove(deleteuser);
+            var user = await _greetingDbContext.Users.FirstOrDefaultAsync(x => x.Email.Equals(Email));
+            if (user == null)
+            {
+                _logger.LogWarning("Delete user failed, user with email {email} not found", Email);
+                throw new UserNotFoundException($"User {Email} not found");
+            }
+
+            _greetingDbContext.Users.Remove(user);
             await _greetingDbContext.SaveChangesAsync();
         }
 
         public async Task<User> GetAsync(string Email)
         {
-            var newuser=await _greetingDbContext.Users.FirstOrDefaultAsync(x => x.Email == Email);
-            return newuser;
+            var user = await _greetingDbContext.Users.FirstOrDefaultAsync(x => x.Email.Equals(Email));
+            if (user == null)
+                return null;
+
+            return user;
         }
 
         public bool IsValidUser(string username, string Password)
@@ -66,5 +92,31 @@ namespace GreetingService.Infrastructure.UserService
 
             await _greetingDbContext.SaveChangesAsync();  
         }
+
+        private async Task<User> GetUserForApprovalAsync(string approvalCode)
+        {
+            var user = await _greetingDbContext.Users.FirstOrDefaultAsync(x => x.Approvalstatus == ApprovalStatus.Pending && x.ApprovalCode.Equals(approvalCode) && x.ApprovalExpiry > DateTime.Now);
+            if (user == null)
+                throw new UserNotFoundException($"User with approval code: {approvalCode} not found");
+
+            return user;
+        }
+
+        public async Task ApproveUserAsync(string approvalcode)
+        {
+            var needapprovaluser= await GetUserForApprovalAsync(approvalcode);
+            needapprovaluser.Approvalstatus=ApprovalStatus.Approved;
+            needapprovaluser.ApprovalStatusNote=$"Approved by an administrator at {DateTime.Now:O}";
+            await _greetingDbContext.SaveChangesAsync();
+        }
+
+        public async Task RejectUserAsync(string approvalcode)
+        {
+            var needapprovaluser = await GetUserForApprovalAsync(approvalcode);
+            needapprovaluser.Approvalstatus = ApprovalStatus.Rejected;
+            needapprovaluser.ApprovalStatusNote = $"Rejected by an administrator at {DateTime.Now:O}";
+            await _greetingDbContext.SaveChangesAsync();
+        }
+
     }
 }

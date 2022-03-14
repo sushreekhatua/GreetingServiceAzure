@@ -32,6 +32,18 @@ namespace GreetingService.Core.Entities
         public string? Password { get; set; }
         public DateTime Created { get; set; }= DateTime.Now;
         public DateTime Modified { get; set; }=DateTime.Now;
+        public ApprovalStatus Approvalstatus{ get; set; }
+        public string ApprovalStatusNote { get; set; } = "This is not approved by Admin";
+        public string ApprovalCode { get; set; }
+        public DateTime ApprovalExpiry { get; set; } = DateTime.Now.AddDays(2);
 
+
+    }
+
+    public enum ApprovalStatus
+    {
+        Approved=0,
+        Rejected=1,
+        Pending=2
     }
 }

@@ -17,6 +17,11 @@ namespace GreetingService.Infrastructure.UserService
             { "maria","winter2022" },
         };
 
+        public Task ApproveUserAsync(string approvalCode)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task CreateAsync(User user)
         {
             throw new NotImplementedException();
@@ -48,6 +53,11 @@ namespace GreetingService.Infrastructure.UserService
         }
 
         public async Task<IEnumerable<User>> ReadAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RejectUserAsync(string approvalCode)
         {
             throw new NotImplementedException();
         }

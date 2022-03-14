@@ -35,6 +35,11 @@ namespace GreetingService.Infrastructure.UserService
             _logger = logger;
         }
 
+        public Task ApproveUserAsync(string approvalCode)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task CreateAsync(User user)
         {
             throw new NotImplementedException();
@@ -71,6 +76,11 @@ namespace GreetingService.Infrastructure.UserService
         }
 
         public async Task<IEnumerable<User>> ReadAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RejectUserAsync(string approvalCode)
         {
             throw new NotImplementedException();
         }
