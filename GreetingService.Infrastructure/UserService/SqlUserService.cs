@@ -105,6 +105,15 @@ namespace GreetingService.Infrastructure.UserService
         public async Task ApproveUserAsync(string approvalcode)
         {
             var needapprovaluser= await GetUserForApprovalAsync(approvalcode);
+            if (needapprovaluser.ApprovalExpiry < DateTime.Now)
+            {
+                throw new Exception($"User has expired on {needapprovaluser.ApprovalExpiry}");
+            }
+            else if (needapprovaluser.Approvalstatus == ApprovalStatus.Rejected)
+            {
+                return;
+            }
+
             needapprovaluser.Approvalstatus=ApprovalStatus.Approved;
             needapprovaluser.ApprovalStatusNote=$"Approved by an administrator at {DateTime.Now:O}";
             await _greetingDbContext.SaveChangesAsync();
@@ -113,6 +122,16 @@ namespace GreetingService.Infrastructure.UserService
         public async Task RejectUserAsync(string approvalcode)
         {
             var needapprovaluser = await GetUserForApprovalAsync(approvalcode);
+
+            if(needapprovaluser.ApprovalExpiry < DateTime.Now)
+            {
+                throw new Exception($"User has expired on {needapprovaluser.ApprovalExpiry}");
+            }
+            else if (needapprovaluser.Approvalstatus == ApprovalStatus.Approved)
+            {
+                    return;
+            }
+
             needapprovaluser.Approvalstatus = ApprovalStatus.Rejected;
             needapprovaluser.ApprovalStatusNote = $"Rejected by an administrator at {DateTime.Now:O}";
             await _greetingDbContext.SaveChangesAsync();

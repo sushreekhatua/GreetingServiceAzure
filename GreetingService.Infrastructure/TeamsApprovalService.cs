@@ -32,11 +32,13 @@ namespace GreetingService.Infrastructure
 						""@type"": ""MessageCard"",
 						""@context"": ""https://schema.org/extensions"",
 						""summary"": ""Approval for new GreetingService user"",
-						""sections"": [
+                        ""themeColor"": ""0076D7"",
+
+                        ""sections"": [
 							{{
-									""title"": ""Pending Approval for admin Sushree Sadhana"",
-								""activityImage"": ""https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png?20160212005950"",
-								""activityTitle"": ""Approve new user in GreetingService: {user.Email}"",
+							    ""title"": ""Pending Approval for admin Sushree Sadhana"",
+								""activityImage"": ""https://teamsnodesample.azurewebsites.net/static/img/image5.png"",
+                                ""activityTitle"": ""Approve new user in GreetingService: {user.Email}"",
 								""activitySubtitle"": ""{user.First_name} {user.Last_name}"",
 								""facts"": [
 									{{
