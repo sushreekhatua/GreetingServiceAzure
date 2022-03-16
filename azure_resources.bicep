@@ -12,6 +12,7 @@ var loggingStorageAccountName = '${substring(appName,0,7)}log${uniqueString(reso
 var sqlServerName = '${appName}sqlserver'
 var sqlDbName = '${appName}sqldb'
 var serviceBusName = '${appName}servicebus'
+var keyvaultName ='${appName}kv'
 
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
@@ -81,7 +82,8 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
         }
         {
           name: 'LoggingStorageAccount'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${loggingStorageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(loggingStorageAccount.id, loggingStorageAccount.apiVersion).keys[0].value}'
+          value: '@Microsoft.KeyVault(SecretUri=https://${keyvaultName}.vault.azure.net/secrets/LoggingStorageAccount/)'
+          //value: 'DefaultEndpointsProtocol=https;AccountName=${loggingStorageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(loggingStorageAccount.id, loggingStorageAccount.apiVersion).keys[0].value}'
         }
         {
           'name': 'FUNCTIONS_EXTENSION_VERSION'
@@ -101,11 +103,18 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
         }
         {
           name: 'GreetingDbConnectionString'
-          value: 'Data Source=tcp:${reference(sqlServer.id).fullyQualifiedDomainName},1433;Initial Catalog=${sqlDbName};User Id=${sqlAdminUser};Password=\'${sqlAdminPassword}\';'
+          value: '@Microsoft.KeyVault(SecretUri=https://${keyvaultName}.vault.azure.net/secrets/GreetingDbConnectionString/)'
+          //value: 'Data Source=tcp:${reference(sqlServer.id).fullyQualifiedDomainName},1433;Initial Catalog=${sqlDbName};User Id=${sqlAdminUser};Password=\'${sqlAdminPassword}\';'
         }
         {
+          name: 'AzureKeyVaultEndpoint'
+          value: 'https://${keyvaultName}.vault.azure.net/'
+        }
+          
+        {
           name:'ServiceBusConnectionString'
-          value: listKeys('${serviceBusNamespace.id}/AuthorizationRules/RootManageSharedAccessKey', serviceBusNamespace.apiVersion).primaryConnectionString
+          value: '@Microsoft.KeyVault(SecretUri=https://${keyvaultName}.vault.azure.net/secrets/ServiceBusConnectionString/)'
+          //value: listKeys('${serviceBusNamespace.id}/AuthorizationRules/RootManageSharedAccessKey', serviceBusNamespace.apiVersion).primaryConnectionString
         }
         // WEBSITE_CONTENTSHARE will also be auto-generated - https://docs.microsoft.com/en-us/azure/azure-functions/functions-app-settings#website_contentshare
         // WEBSITE_RUN_FROM_PACKAGE will be set to 1 by func azure functionapp publish
@@ -220,5 +229,90 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2018-01-01-preview
     }
   }  
 }
+
+resource keyvault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
+  name: keyvaultName
+  location: location
+  
+  properties: {
+    tenantId: '9583541d-47a0-4deb-9e14-541050ac8bc1'
+    sku: {
+      family: 'A'
+      name: 'standard'
+    }
+    accessPolicies: [
+      {
+        tenantId: '9583541d-47a0-4deb-9e14-541050ac8bc1' 
+        objectId: 'ddb54150-93c2-49dc-b799-aeced464c380'
+        permissions: {         
+          secrets: [
+            'get'
+            'list'
+            'set'
+            'delete'
+            'recover'
+            'backup'
+            'restore'
+          ]          
+        }            
+      }
+      {
+        tenantId: '9583541d-47a0-4deb-9e14-541050ac8bc1'
+        objectId: 'a9bb3907-5af7-46e1-ab03-99b7825b07a7'
+        permissions: {         
+          secrets: [
+            'get'
+            'list'
+            'set'
+          ]  
+        }       
+      }
+    ]
+    
+    // enabledForDeployment: false
+    // enabledForDiskEncryption: false
+    // enabledForTemplateDeployment: false
+    // enableRbacAuthorization: false
+    // enableSoftDelete: true
+    // softDeleteRetentionInDays: 90
+    // vaultUri:'https://${keyvaultName}.vault.azure.net/'
+    // provisioningState: 'Succeeded'
+    // publicNetworkAccess: 'Enabled'
+  }
+  resource secretgreetingdbconnection 'secrets@2021-11-01-preview' = {
+    name: 'GreetingDbConnectionString'
+    properties: {
+      value: 'Data Source=tcp:${reference(sqlServer.id).fullyQualifiedDomainName},1433;Initial Catalog=${sqlDbName};User Id=${sqlAdminUser};Password=\'${sqlAdminPassword}\';'
+    }
+  }
+
+  resource secretGreetingServiceBaseUrl 'secrets@2021-11-01-preview' = {
+    name: 'GreetingServiceBaseUrl'
+    properties: {
+      value: 'https://sadhanafunction3app.azurewebsites.net'
+    }
+  }
+
+  resource secretLoggingStorageAccount 'secrets@2021-11-01-preview' = {
+    name: 'LoggingStorageAccount'
+    properties: {
+      value: 'DefaultEndpointsProtocol=https;AccountName=${loggingStorageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(loggingStorageAccount.id, loggingStorageAccount.apiVersion).keys[0].value}'
+    }
+  }
+  resource secretServiceBusConnectionString 'secrets@2021-11-01-preview' = {
+    name: 'ServiceBusConnectionString'
+    properties: {
+      value: listKeys('${serviceBusNamespace.id}/AuthorizationRules/RootManageSharedAccessKey', serviceBusNamespace.apiVersion).primaryConnectionString
+    }
+  }
+}
+
+
+
+    
+
+   
+  
+
 
 

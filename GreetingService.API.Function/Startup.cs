@@ -9,8 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using System.Reflection;
-
+using Azure.Identity;
+using System;
+using Microsoft.Azure.KeyVault;
 
 
 [assembly: FunctionsStartup(typeof(GreetingService.API.Function.Startup))]
@@ -18,6 +19,17 @@ namespace GreetingService.API.Function
 {
     public class Startup : FunctionsStartup
     {
+        //public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
+        //{
+        //    builder.ConfigurationBuilder.AddAzureKeyVault(Environment.GetEnvironmentVariable("KeyVaultUri"));
+        //}
+        public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
+        {
+            var builtConfig = builder.ConfigurationBuilder.Build();
+            var keyVaultEndpoint = builtConfig["AzureKeyVaultEndpoint"];
+            builder.ConfigurationBuilder
+                        .AddAzureKeyVault(keyVaultEndpoint);
+        }
         public override void Configure(IFunctionsHostBuilder builder)
         {
             var config = builder.GetContext().Configuration;
